@@ -11,7 +11,13 @@ export const overridesPreferences = defineOverridesPreferences({
     /** 后端路由模式 */
     accessMode: 'backend',
     name: import.meta.env.VITE_APP_TITLE,
-    enableRefreshToken: true,
+    enableRefreshToken: false,
+  },
+  theme: {
+    mode: 'light'
+  },
+  widget: {
+    notification: false,
   },
   footer: {
     /** 默认关闭 footer 页脚，因为有一定遮挡 */

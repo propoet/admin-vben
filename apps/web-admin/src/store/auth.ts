@@ -1,4 +1,4 @@
-import type { AuthPermissionInfo, Recordable, UserInfo } from '@vben/types';
+import type { Recordable, UserInfo } from '@vben/types';
 
 import type { AuthApi } from '#/api';
 
@@ -14,6 +14,7 @@ import { defineStore } from 'pinia';
 
 import {
   getAuthPermissionInfoApi,
+  getUserInfoApi,
   loginApi,
   logoutApi,
   register,
@@ -63,7 +64,7 @@ export const useAuthStore = defineStore('auth', () => {
           loginResult = await loginApi(params);
         }
       }
-      const { accessToken, refreshToken } = loginResult;
+      const { token:accessToken, refreshToken } = loginResult;
 
       // 如果成功获取到 accessToken
       if (accessToken) {
@@ -132,14 +133,16 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function fetchUserInfo() {
     // 加载
-    const authPermissionInfo: AuthPermissionInfo | null =
+    const authPermissionInfo: AuthApi.AuthPermissionInfo | null =
       await getAuthPermissionInfoApi();
+
+    const userInfo: AuthApi.UserInfo | null = await getUserInfoApi();
     // userStore
-    userStore.setUserInfo(authPermissionInfo.user);
-    userStore.setUserRoles(authPermissionInfo.roles);
+    userStore.setUserInfo(userInfo);
+    userStore.setUserRoles(userInfo.roleName);
     // accessStore
-    accessStore.setAccessMenus(authPermissionInfo.menus);
-    accessStore.setAccessCodes(authPermissionInfo.permissions);
+    accessStore.setAccessMenus(authPermissionInfo.menuList);
+    accessStore.setAccessCodes(authPermissionInfo.permissionCodeList);
     return authPermissionInfo;
   }
 

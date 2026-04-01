@@ -5,7 +5,9 @@
     "codeLogin": "验证码登录",
     "qrcodeLogin": "二维码登录",
     "forgetPassword": "忘记密码",
-    "profile": "个人中心"
+    "profile": "个人中心",
+    "imageCaptchaCodeTip": "请输入图片验证码",
+    "imageCaptchaCode": "图片验证码"
   },
   "dashboard": {
     "title": "概览",

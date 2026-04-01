@@ -14,7 +14,6 @@ import { useVbenForm } from '@vben-core/form-ui';
 import { VbenButton, VbenCheckbox } from '@vben-core/shadcn-ui';
 
 import Title from './auth-title.vue';
-import DocLink from './doc-link.vue';
 import ThirdPartyLogin from './third-party-login.vue';
 
 interface Props extends AuthenticationProps {
@@ -161,7 +160,7 @@ defineExpose({
     >
       <VbenButton
         v-if="showCodeLogin"
-        class="w-1/2"
+        class="w-full"
         variant="outline"
         @click="handleGo(codeLoginPath)"
       >
@@ -198,6 +197,6 @@ defineExpose({
     </slot>
 
     <!-- 萌新必读 -->
-    <DocLink />
+<!--    <DocLink />-->
   </div>
 </template>

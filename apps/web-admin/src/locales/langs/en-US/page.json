@@ -5,7 +5,9 @@
     "codeLogin": "Code Login",
     "qrcodeLogin": "Qr Code Login",
     "forgetPassword": "Forget Password",
-    "profile": "Profile"
+    "profile": "Profile",
+    "imageCaptchaCodeTip": "Please enter the image verification code",
+    "imageCaptchaCode": "Image Verification Code"
   },
   "dashboard": {
     "title": "Dashboard",

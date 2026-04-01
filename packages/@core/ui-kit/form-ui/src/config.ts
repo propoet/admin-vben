@@ -11,6 +11,7 @@ import { h } from 'vue';
 import {
   VbenButton,
   VbenCheckbox,
+  VbenImageCaptcha,
   Input as VbenInput,
   VbenInputPassword,
   VbenPinInput,
@@ -28,6 +29,7 @@ export const COMPONENT_MAP: Record<BaseFormComponentType, Component> = {
   DefaultButton: h(VbenButton, { size: 'sm', variant: 'outline' }),
   PrimaryButton: h(VbenButton, { size: 'sm', variant: 'default' }),
   VbenCheckbox,
+  VbenImageCaptcha,
   VbenInput,
   VbenInputPassword,
   VbenPinInput,

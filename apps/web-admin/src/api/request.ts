@@ -68,7 +68,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   }
 
   function formatToken(token: null | string) {
-    return token ? `Bearer ${token}` : null;
+    return token ? `${token}` : null;
   }
 
   // 请求头处理
@@ -76,7 +76,8 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
     fulfilled: async (config) => {
       const accessStore = useAccessStore();
 
-      config.headers.Authorization = formatToken(accessStore.accessToken);
+      // config.headers.Authorization = formatToken(accessStore.accessToken);
+      config.headers.token = formatToken(accessStore.accessToken);
       config.headers['Accept-Language'] = preferences.app.locale;
       // 添加租户编号
       config.headers['tenant-id'] = tenantEnable
@@ -133,7 +134,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
     defaultResponseInterceptor({
       codeField: 'code',
       dataField: 'data',
-      successCode: 0,
+      successCode: 10_000_000,
     }),
   );
 
@@ -157,7 +158,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
       const errorMessage =
         responseData?.error ?? responseData?.message ?? responseData.msg ?? '';
       // add by yn：特殊：避免 401 “账号未登录”，重复提示。因为，此时会跳转到登录界面，只需提示一次！！！
-      if (error?.data?.code === 401) {
+      if (error?.data?.code === 10_003_001) {
         return;
       }
       // 如果没有错误信息，则会根据状态码进行提示

@@ -1,13 +1,19 @@
-import type { AuthPermissionInfo } from '@vben/types';
 
 import { baseRequestClient, requestClient } from '#/api/request';
 
 export namespace AuthApi {
+  /**图片验证码 */
+  export interface CaptchaResult {
+    key: string;
+    imageBase64:string
+  }
   /** 登录接口参数 */
   export interface LoginParams {
     password?: string;
     username?: string;
-    captchaVerification?: string;
+    captchaKey?: string;
+    captchaCode?: string;
+    clientType?: string;
     // 绑定社交登录时，需要传递如下参数
     socialType?: number;
     socialCode?: string;
@@ -16,11 +22,35 @@ export namespace AuthApi {
 
   /** 登录接口返回值 */
   export interface LoginResult {
-    accessToken: string;
+    // accessToken: string;
     refreshToken: string;
-    userId: number;
-    expiresTime: number;
+    // userId: number;
+    // expiresTime: number;
+    token: string;
+    userId:string;
+    smsKey:string;
+    currentFrequentLoginPlaceCode:string;
+    needFrequentLoginPlaceCode:boolean;
+    needSmsCode:boolean;
   }
+  export interface UserInfo{
+    frequentLoginPlaceCode:string;
+    id:string;
+    name:string;
+    phone:string;
+    roleName: string[];
+    username: string;
+    avatar: string;
+    nickname: string;
+    userId: string;
+    homePath: string;
+  }
+  export interface AuthPermissionInfo{
+    user: UserInfo;
+    permissionCodeList: string[];
+    menuList: any[]
+  }
+
 
   /** 租户信息返回值 */
   export interface TenantResult {
@@ -62,9 +92,14 @@ export namespace AuthApi {
   }
 }
 
+/** 获取图片验证码 */
+export async function getCaptchaApi() {
+  return requestClient.get<AuthApi.CaptchaResult>('/auth/captcha');
+}
+
 /** 登录 */
 export async function loginApi(data: AuthApi.LoginParams) {
-  return requestClient.post<AuthApi.LoginResult>('/system/auth/login', data, {
+  return requestClient.post<AuthApi.LoginResult>('/auth/pwd-login', data, {
     headers: {
       isEncrypt: false,
     },
@@ -93,11 +128,16 @@ export async function logoutApi(accessToken: string) {
 
 /** 获取权限信息 */
 export async function getAuthPermissionInfoApi() {
-  return requestClient.get<AuthPermissionInfo>(
-    '/system/auth/get-permission-info',
+  return requestClient.get<AuthApi.AuthPermissionInfo>(
+    '/auth/permission-info',
   );
 }
-
+/**获取用户信息*/
+export async function getUserInfoApi() {
+  return requestClient.get<AuthApi.UserInfo>(
+    '/auth/user-info',
+  );
+}
 /** 获取租户列表 */
 export async function getTenantSimpleList() {
   return requestClient.get<AuthApi.TenantResult[]>(
