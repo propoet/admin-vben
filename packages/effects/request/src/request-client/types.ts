@@ -75,6 +75,10 @@ interface HttpResponse<T = any> {
   code: number;
   data: T;
   msg: string;
+  /**
+   * 服务端返回时间戳（毫秒或秒）
+   */
+  timestamp?: number | string;
 }
 
 interface PageParam {
