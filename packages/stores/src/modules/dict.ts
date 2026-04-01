@@ -42,9 +42,24 @@ export const useDictStore = defineStore('core-dict', {
       valueField: string = 'value',
     ) {
       api(params).then((dicts) => {
+        // 将dicts 根据children 拍平 转成  {dictType: "ai_generate_mode", value: "1", label: "歌词模式", colorType: "", cssClass: ""} 形式,
+        const dictData:any[] = []
+        console.log(dicts.length,'dicts');
+        for(const dict of dicts){
+          const dictType = dict?.code;
+          dict.children.forEach((item: any)=>{
+            dictData.push({
+              dictType: dictType,
+              value: item.value,
+              label: item.label,
+              colorType: item.colorType,
+              cssClass: item.cssClass,
+            })
+          })
+        }
         const dictCacheData: Dict = {};
-        dicts.forEach((dict) => {
-          dictCacheData[dict.dictType] = dicts
+        dictData.forEach((dict) => {
+          dictCacheData[dict.dictType] = dictData
             .filter((d) => d.dictType === dict.dictType)
             .map((d) => ({
               colorType: d.colorType,
@@ -53,6 +68,7 @@ export const useDictStore = defineStore('core-dict', {
               value: d[valueField],
             }));
         });
+        console.log(Object.keys(dictCacheData),'dictCacheData');
         this.setDictCache(dictCacheData);
       });
     },

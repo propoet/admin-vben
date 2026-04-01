@@ -21,7 +21,7 @@ export namespace SystemDictDataApi {
 // 查询字典数据（精简)列表
 export function getSimpleDictDataList() {
   return requestClient.get<SystemDictDataApi.DictData[]>(
-    '/system/dict-data/simple-list',
+    '/basic-dict/tree',
   );
 }
 

@@ -60,8 +60,12 @@ export const authenticateResponseInterceptor = ({
   return {
     rejected: async (error) => {
       const { config, response, data: responseData } = error;
+      const businessUnauthorizedCodes = [401, 10_003_001];
+      const isUnauthorized =
+        response?.status === 401 ||
+        businessUnauthorizedCodes.includes(responseData?.code);
       // 如果不是 401 错误，直接抛出异常
-      if (response?.status !== 401 && responseData?.code !== 401) {
+      if (!isUnauthorized) {
         throw error;
       }
       // 判断是否启用了 refreshToken 功能

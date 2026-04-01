@@ -51,6 +51,7 @@ const { closeOtherTabs, refreshTab } = useTabs();
 const notifications = ref<NotificationItem[]>([]);
 const unreadCount = ref(0);
 const showDot = computed(() => unreadCount.value > 0);
+const notificationEnabled = computed(() => preferences.widget.notification);
 
 const [HelpModal, helpModalApi] = useVbenModal({
   connectedComponent: Help,
@@ -101,11 +102,19 @@ async function handleLogout() {
 
 /** 获得未读消息数 */
 async function handleNotificationGetUnreadCount() {
+  if (!notificationEnabled.value) {
+    unreadCount.value = 0;
+    return;
+  }
   unreadCount.value = await getUnreadNotifyMessageCount();
 }
 
 /** 获得消息列表 */
 async function handleNotificationGetList() {
+  if (!notificationEnabled.value) {
+    notifications.value = [];
+    return;
+  }
   const list = await getUnreadNotifyMessageList();
   notifications.value = list.map((item) => ({
     avatar: preferences.app.defaultAvatar,
@@ -126,6 +135,11 @@ function handleNotificationViewAll() {
 
 /** 标记所有已读 */
 async function handleNotificationMakeAll() {
+  if (!notificationEnabled.value) {
+    unreadCount.value = 0;
+    notifications.value = [];
+    return;
+  }
   await updateAllNotifyMessageRead();
   unreadCount.value = 0;
   notifications.value = [];
@@ -148,7 +162,7 @@ async function handleNotificationRead(item: NotificationItem) {
 
 /** 处理通知打开 */
 function handleNotificationOpen(open: boolean) {
-  if (!open) {
+  if (!open || !notificationEnabled.value) {
     return;
   }
   handleNotificationGetList();
@@ -186,14 +200,16 @@ async function handleTenantChange(tenant: SystemTenantApi.Tenant) {
 
 // ========== 初始化 ==========
 onMounted(() => {
-  // 首次加载未读数量
-  handleNotificationGetUnreadCount();
+  if (notificationEnabled.value) {
+    // 首次加载未读数量
+    handleNotificationGetUnreadCount();
+  }
   // 获取租户列表
   handleGetTenantList();
   // 轮询刷新未读数量
   setInterval(
     () => {
-      if (userStore.userInfo) {
+      if (notificationEnabled.value && userStore.userInfo) {
         handleNotificationGetUnreadCount();
       }
     },
@@ -237,6 +253,7 @@ watch(
     </template>
     <template #notification>
       <Notification
+        v-if="notificationEnabled"
         :dot="showDot"
         :notifications="notifications"
         @clear="handleNotificationClear"

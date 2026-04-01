@@ -143,6 +143,7 @@ export const useAuthStore = defineStore('auth', () => {
     // accessStore
     accessStore.setAccessMenus(authPermissionInfo.menuList);
     accessStore.setAccessCodes(authPermissionInfo.permissionCodeList);
+    authPermissionInfo.user = userInfo;
     return authPermissionInfo;
   }
 

@@ -116,11 +116,11 @@ export async function refreshTokenApi(refreshToken: string) {
 /** 退出登录 */
 export async function logoutApi(accessToken: string) {
   return baseRequestClient.post(
-    '/system/auth/logout',
+    '/auth/logout',
     {},
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        token: `${accessToken}`,
       },
     },
   );
