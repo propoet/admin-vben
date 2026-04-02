@@ -44,7 +44,6 @@ export const useDictStore = defineStore('core-dict', {
       api(params).then((dicts) => {
         // 将dicts 根据children 拍平 转成  {dictType: "ai_generate_mode", value: "1", label: "歌词模式", colorType: "", cssClass: ""} 形式,
         const dictData:any[] = []
-        console.log(dicts.length,'dicts');
         for(const dict of dicts){
           const dictType = dict?.code;
           dict.children.forEach((item: any)=>{
@@ -68,7 +67,6 @@ export const useDictStore = defineStore('core-dict', {
               value: d[valueField],
             }));
         });
-        console.log(Object.keys(dictCacheData),'dictCacheData');
         this.setDictCache(dictCacheData);
       });
     },
