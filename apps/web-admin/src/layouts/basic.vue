@@ -6,18 +6,13 @@ import type { SystemTenantApi } from '#/api/system/tenant';
 import { computed, onMounted, ref, watch } from 'vue';
 
 import { useAccess } from '@vben/access';
-import { AuthenticationLoginExpiredModal, useVbenModal } from '@vben/common-ui';
-import { VBEN_DOC_URL, VBEN_GITHUB_URL } from '@vben/constants';
+import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
 import { isTenantEnable, useTabs, useWatermark } from '@vben/hooks';
 import {
   AntdProfileOutlined,
-  BookOpenText,
-  CircleHelp,
-  SvgGithubIcon,
 } from '@vben/icons';
 import {
   BasicLayout,
-  Help,
   LockScreen,
   Notification,
   TenantDropdown,
@@ -25,7 +20,7 @@ import {
 } from '@vben/layouts';
 import { preferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
-import { formatDateTime, openWindow } from '@vben/utils';
+import { formatDateTime } from '@vben/utils';
 
 import { ElMessage } from 'element-plus';
 
@@ -53,9 +48,9 @@ const unreadCount = ref(0);
 const showDot = computed(() => unreadCount.value > 0);
 const notificationEnabled = computed(() => preferences.widget.notification);
 
-const [HelpModal, helpModalApi] = useVbenModal({
-  connectedComponent: Help,
-});
+// const [HelpModal, helpModalApi] = useVbenModal({
+//   connectedComponent: Help,
+// });
 
 const menus = computed(() => [
   {
@@ -65,31 +60,31 @@ const menus = computed(() => [
     icon: AntdProfileOutlined,
     text: $t('ui.widgets.profile'),
   },
-  {
-    handler: () => {
-      openWindow(VBEN_DOC_URL, {
-        target: '_blank',
-      });
-    },
-    icon: BookOpenText,
-    text: $t('ui.widgets.document'),
-  },
-  {
-    handler: () => {
-      openWindow(VBEN_GITHUB_URL, {
-        target: '_blank',
-      });
-    },
-    icon: SvgGithubIcon,
-    text: 'GitHub',
-  },
-  {
-    handler: () => {
-      helpModalApi.open();
-    },
-    icon: CircleHelp,
-    text: $t('ui.widgets.qa'),
-  },
+  // {
+  //   handler: () => {
+  //     openWindow(VBEN_DOC_URL, {
+  //       target: '_blank',
+  //     });
+  //   },
+  //   icon: BookOpenText,
+  //   text: $t('ui.widgets.document'),
+  // },
+  // {
+  //   handler: () => {
+  //     openWindow(VBEN_GITHUB_URL, {
+  //       target: '_blank',
+  //     });
+  //   },
+  //   icon: SvgGithubIcon,
+  //   text: 'GitHub',
+  // },
+  // {
+  //   handler: () => {
+  //     helpModalApi.open();
+  //   },
+  //   icon: CircleHelp,
+  //   text: $t('ui.widgets.qa'),
+  // },
 ]);
 
 const avatar = computed(() => {
@@ -227,7 +222,7 @@ watch(
       await updateWatermark({
         content:
           content ||
-          `${userStore.userInfo?.id} - ${userStore.userInfo?.nickname}`,
+          `${userStore.userInfo?.id} - ${userStore.userInfo?.nickname || userStore.userInfo?.name}`,
       });
     } else {
       destroyWatermark();
@@ -245,9 +240,8 @@ watch(
       <UserDropdown
         :avatar
         :menus
-        :text="userStore.userInfo?.nickname"
         :description="userStore.userInfo?.email"
-        :tag-text="userStore.userInfo?.username"
+        :tag-text="userStore.userInfo?.name || userStore.userInfo?.username"
         @logout="handleLogout"
       />
     </template>

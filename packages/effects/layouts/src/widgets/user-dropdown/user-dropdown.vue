@@ -200,6 +200,7 @@ if (enableShortcutKey.value) {
       <div class="mr-2 ml-1 cursor-pointer rounded-full p-1.5 hover:bg-accent">
         <div class="flex-center hover:text-accent-foreground">
           <VbenAvatar :alt="text" :src="avatar" class="size-8" dot />
+          <span class="ml-2 text-xs">{{ tagText }}</span>
         </div>
       </div>
     </DropdownMenuTrigger>

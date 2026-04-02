@@ -1,4 +1,4 @@
-import type { Recordable, UserInfo } from '@vben/types';
+import type { Recordable } from '@vben/types';
 
 import type { AuthApi } from '#/api';
 
@@ -43,7 +43,7 @@ export const useAuthStore = defineStore('auth', () => {
     onSuccess?: () => Promise<void> | void,
   ) {
     // 异步处理用户登录操作并获取 accessToken
-    let userInfo: null | UserInfo = null;
+    let userInfo: AuthApi.UserInfo | null = null;
     try {
       let loginResult: AuthApi.LoginResult;
       loginLoading.value = true;
@@ -90,11 +90,10 @@ export const useAuthStore = defineStore('auth', () => {
                 userInfo.homePath || preferences.app.defaultHomePath,
               );
         }
-
-        if (userInfo?.nickname) {
+        if (userInfo?.nickname || userInfo?.name) {
           ElNotification.success({
-            message: `${$t('authentication.loginSuccessDesc')}:${userInfo?.nickname}`,
-            duration: 3,
+            message: `${$t('authentication.loginSuccessDesc')}:${userInfo?.nickname || userInfo?.name}`,
+            duration: 3000,
             title: $t('authentication.loginSuccess'),
           });
         }

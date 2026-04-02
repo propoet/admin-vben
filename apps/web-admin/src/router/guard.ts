@@ -102,7 +102,7 @@ function setupAccessGuard(router: Router) {
     // 当前登录用户拥有的角色标识列表
     let userInfo = userStore.userInfo;
     if (!userInfo) {
-      // add by yn：由于 yudao 是 fetchUserInfo 统一加载用户 + 权限信息，所以将 fetchMenuListAsync
+      // add by yn：由于 是 fetchUserInfo 统一加载用户 + 权限信息，所以将 fetchMenuListAsync
       const message = ElMessage({
         message: `${$t('common.loadingMenu')}...`,
         type: 'success',
