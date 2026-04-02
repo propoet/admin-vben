@@ -6,14 +6,17 @@ export namespace SystemUserProfileApi {
     id: number;
     username: string;
     nickname: string;
+    name: string;
     email?: string;
     mobile?: string;
+    phone?: string;
     sex?: number;
     avatar?: string;
     loginIp: string;
     loginDate: string;
     createTime: string;
     roles: any[];
+    roleName: string[];
     dept: any;
     posts: any[];
   }
@@ -28,6 +31,7 @@ export namespace SystemUserProfileApi {
   export interface UpdateProfileReqVO {
     nickname?: string;
     email?: string;
+    name:string;
     mobile?: string;
     sex?: number;
     avatar?: string;
@@ -37,7 +41,7 @@ export namespace SystemUserProfileApi {
 /** 获取登录用户信息 */
 export function getUserProfile() {
   return requestClient.get<SystemUserProfileApi.UserProfileRespVO>(
-    '/system/user/profile/get',
+    '/auth/user-info',
   );
 }
 
@@ -45,7 +49,7 @@ export function getUserProfile() {
 export function updateUserProfile(
   data: SystemUserProfileApi.UpdateProfileReqVO,
 ) {
-  return requestClient.put('/system/user/profile/update', data);
+  return requestClient.post('/platform-user/personal-info-change', data);
 }
 
 /** 修改用户个人密码 */

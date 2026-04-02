@@ -5,13 +5,11 @@ import type { SystemUserProfileApi } from '#/api/system/user/profile';
 
 import { watch } from 'vue';
 
-import { DICT_TYPE } from '@vben/constants';
-import { getDictOptions } from '@vben/hooks';
 import { $t } from '@vben/locales';
 
 import { ElMessage } from 'element-plus';
 
-import { useVbenForm, z } from '#/adapter/form';
+import { useVbenForm } from '#/adapter/form';
 import { updateUserProfile } from '#/api/system/user/profile';
 
 const props = defineProps<{
@@ -27,41 +25,15 @@ const [Form, formApi] = useVbenForm({
   },
   schema: [
     {
-      label: '用户昵称',
-      fieldName: 'nickname',
+      label: '姓名',
+      fieldName: 'name',
       component: 'Input',
       componentProps: {
-        placeholder: '请输入用户昵称',
+        placeholder: '请输入姓名',
       },
       rules: 'required',
     },
-    {
-      label: '用户手机',
-      fieldName: 'mobile',
-      component: 'Input',
-      componentProps: {
-        placeholder: '请输入用户手机',
-      },
-      rules: z.string(),
-    },
-    {
-      label: '用户邮箱',
-      fieldName: 'email',
-      component: 'Input',
-      componentProps: {
-        placeholder: '请输入用户邮箱',
-      },
-      rules: z.string().email('请输入正确的邮箱'),
-    },
-    {
-      label: '用户性别',
-      fieldName: 'sex',
-      component: 'RadioGroup',
-      componentProps: {
-        options: getDictOptions(DICT_TYPE.SYSTEM_USER_SEX, 'number'),
-      },
-      rules: z.number(),
-    },
+
   ],
   resetButtonOptions: {
     show: false,

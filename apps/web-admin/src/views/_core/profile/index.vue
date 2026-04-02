@@ -8,13 +8,12 @@ import { useUserStore } from '@vben/stores';
 
 import { ElCard, ElTabPane, ElTabs } from 'element-plus';
 
-import { getAuthPermissionInfoApi } from '#/api';
+import {getUserInfoApi } from '#/api';
 import { getUserProfile } from '#/api/system/user/profile';
 
 import BaseInfo from './modules/base-info.vue';
 import ProfileUser from './modules/profile-user.vue';
 import ResetPwd from './modules/reset-pwd.vue';
-import UserSocial from './modules/user-social.vue';
 
 const userStore = useUserStore();
 const activeName = ref('basicInfo');
@@ -31,8 +30,8 @@ async function refreshProfile() {
   await loadProfile();
 
   // 更新 store
-  const authPermissionInfo = await getAuthPermissionInfoApi();
-  userStore.setUserInfo(authPermissionInfo.user);
+  const userInfo = await getUserInfoApi();
+  userStore.setUserInfo(userInfo);
 }
 
 /** 初始化 */
@@ -56,9 +55,9 @@ onMounted(loadProfile);
           <ElTabPane name="resetPwd" label="密码设置">
             <ResetPwd />
           </ElTabPane>
-          <ElTabPane name="userSocial" label="社交绑定" force-render>
+          <!-- <ElTabPane name="userSocial" label="社交绑定" force-render>
             <UserSocial @update:active-name="activeName = $event" />
-          </ElTabPane>
+          </ElTabPane> -->
           <!-- TODO @yn：在线设备 -->
         </ElTabs>
       </ElCard>
